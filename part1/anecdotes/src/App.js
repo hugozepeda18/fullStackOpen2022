@@ -1,5 +1,22 @@
 import { useState } from 'react'
 
+const Winner = ({anecdotes, allVotes}) => {
+  const highestVoteCount = Math.max(...allVotes)
+  const winnerIndex = allVotes.indexOf(highestVoteCount)
+  const winner = anecdotes[winnerIndex]
+  if (highestVoteCount === 0) {
+    return (
+      <p>No votes yet</p>
+    )
+  }
+  return (
+    <div>
+      <p>{winner}</p>
+      <p>has {highestVoteCount} votes</p>
+    </div>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -14,12 +31,8 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const [voted, setVote] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0})
 
-  const handleClick = () => {
-    let num = Math.floor(Math.random() * (6)) + 1
-    console.log(num)
-    setSelected(selected*0 + num)
-  }
-
+  const handleClick = () => setSelected(selected*0 + Math.floor(Math.random() * (6)) + 1)
+  
   const handleVotes = () => {
     switch(selected){
       case 0:
@@ -62,10 +75,13 @@ const App = () => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {voted[selected]} votes</p>
       <button onClick={handleVotes}>vote for this anecdote!</button>
       <button onClick={handleClick}>next anecdote</button>
+      <h1>Anecdote with the most votes</h1>
+      <Winner anecdotes={anecdotes} allVotes={Object.values(voted)}/>
     </div>
   )
 }
