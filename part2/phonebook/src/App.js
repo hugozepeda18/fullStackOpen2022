@@ -16,8 +16,13 @@ const App = () => {
     const newPerson = {
       name: newName
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
+    if(persons.find(element => element.name === newPerson.name)){
+      alert(`${newPerson.name} already in the list`)
+      setNewName('')
+    } else {
+      setPersons(persons.concat(newPerson))
+      setNewName('')
+    } 
   }
 
   return (
@@ -38,7 +43,7 @@ const App = () => {
         <h2>Names:</h2>
         <ul>
           {persons.map(person => {
-            return (<li key={person.name}>{person.name}</li>)
+              return <li key={person.name}>{person.name}</li>
           })}
         </ul>
       </div>
