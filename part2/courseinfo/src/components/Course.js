@@ -10,7 +10,7 @@ const Header = (props) => {
     return(
       <div>
         <p>
-          {props.part} {props.exercise}
+          {props.name} {props.exercises}
         </p>
       </div>
     )
@@ -19,8 +19,8 @@ const Header = (props) => {
   const Content = (props) => {
     return(
       <div>
-        {props.parts.forEach(element => {
-          <Part part={element} exercise={element}/>
+        {props.parts.map(parts => {
+          <Part name={parts.name} exercises={parts.exercises}/>
         })}
       </div>
     )
