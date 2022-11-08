@@ -1,11 +1,12 @@
-import { useState } from 'react'
-
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([
     {
       name: 'Arto Hellas',
-      number: '3339560082'
+      number: '3339560082',
+      id: 1
     }
   ]) 
   const [newName, setNewName] = useState('')
@@ -39,6 +40,15 @@ const App = () => {
       setNewPhone('')
     } 
   }
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }, [])
 
   return (
     <>
