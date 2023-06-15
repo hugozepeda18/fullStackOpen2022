@@ -58,35 +58,6 @@ let authors = [
 
 
 
-/*
-
- * Suomi:
-
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
-
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
-
- *
-
- * English:
-
- * It might make more sense to associate a book with its author by storing the author's id in the context of the book instead of the author's name
-
- * However, for simplicity, we will store the author's name in connection with the book
-
- *
-
- * Spanish:
-
- * Podría tener más sentido asociar un libro con su autor almacenando la id del autor en el contexto del libro en lugar del nombre del autor
-
- * Sin embargo, por simplicidad, almacenaremos el nombre del autor en conección con el libro
-
-*/
-
-
-
-
 let books = [
 
   {
@@ -192,15 +163,6 @@ let books = [
 
 
 
-/*
-
-  you can remove the placeholder query once your first own has been implemented
-
-*/
-
-
-
-
 
 const typeDefs = `
 
@@ -221,6 +183,17 @@ const typeDefs = `
 
 
 
+  type Author {
+
+    name: String!
+
+    bookCount: Int!
+
+  }
+
+
+
+
   type Query {
 
     bookCount: Int
@@ -228,6 +201,8 @@ const typeDefs = `
     authorCount: Int
 
     allBooks: [Book!]!
+
+    allAuthors: [Author!]!
 
   }
 
@@ -250,7 +225,29 @@ const resolvers = {
 
     },
 
-    allBooks: () => books
+    allBooks: () => books,
+
+    allAuthors: () => {
+
+        const unique = [...new Set(books.map(item => item.author))]
+
+        const authors = unique.map((obj) => {
+
+            const booking = books.filter((book) => book.author === obj)
+
+            return {
+
+                name: obj,
+
+                bookCount: booking.length
+
+            }
+
+        })
+
+        return authors
+
+    },
 
   }
 
