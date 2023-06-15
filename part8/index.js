@@ -194,6 +194,15 @@ const typeDefs = `
 
 
 
+  type Books {
+
+    title: String!
+
+  }
+
+
+
+
   type Query {
 
     bookCount: Int
@@ -203,6 +212,8 @@ const typeDefs = `
     allBooks: [Book!]!
 
     allAuthors: [Author!]!
+
+    allBook(author: String!) : [Books!]!
 
   }
 
@@ -248,6 +259,26 @@ const resolvers = {
         return authors
 
     },
+
+    allBook: (root, args) => {
+
+        const titles = books.filter(book => book.author === args.author)
+
+        let title = []
+
+        titles.map(book => {
+
+          title.push({
+
+            title: book.title
+
+          })
+
+        })
+
+        return title
+
+    }
 
   }
 
